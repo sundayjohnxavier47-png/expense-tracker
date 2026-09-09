@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, redirect, url_for
 from expense_tracker import Expense, ExpenseTracker
 
 app = Flask(__name__)
@@ -13,8 +13,16 @@ def index():
         category = request.form["category"]
         tracker.add_expense(Expense(description, amount, category))
         tracker.save_to_file()
+        return redirect(url_for("index"))
 
-    return render_template("index.html", expenses=tracker.expenses)
+    total = sum(expense.amount for expense in tracker.expenses)
+    return render_template("index.html", expenses=tracker.expenses, total=total)
+
+@app.route("/delete/<int:index>")
+def delete(index):
+    tracker.delete_expense(index)
+    tracker.save_to_file()
+    return redirect(url_for("index"))
 
 if __name__ == "__main__":
     app.run(debug=True)

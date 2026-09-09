@@ -16,6 +16,9 @@
             color: #F7E7CE;
             letter-spacing: 1px;
         }
+        h2 {
+            color: #F7E7CE;
+        }
         form {
             background-color: #142B52;
             padding: 20px;
@@ -40,13 +43,28 @@
         ul {
             list-style: none;
             padding: 0;
-            width: 300px;
+            width: 320px;
         }
         li {
             background-color: #142B52;
             margin: 6px 0;
             padding: 10px;
             border-radius: 6px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        a {
+            color: #F7E7CE;
+            text-decoration: none;
+            font-size: 0.85em;
+            border: 1px solid #F7E7CE;
+            padding: 4px 8px;
+            border-radius: 4px;
+        }
+        a:hover {
+            background-color: #F7E7CE;
+            color: #0B1D3A;
         }
     </style>
 </head>
@@ -60,9 +78,14 @@
         <button type="submit">Add Expense</button>
     </form>
 
+    <h2>Total: {{ total }}</h2>
+
     <ul>
         {% for expense in expenses %}
-            <li>{{ expense.description }} - {{ expense.amount }} ({{ expense.category }})</li>
+            <li>
+                <span>{{ expense.description }} - {{ expense.amount }} ({{ expense.category }})</span>
+                <a href="{{ url_for('delete', index=loop.index0) }}">Delete</a>
+            </li>
         {% endfor %}
     </ul>
 </body>
